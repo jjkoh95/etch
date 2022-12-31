@@ -27,6 +27,15 @@
     {{ $css := $resources | resources.Concat "css/style.css" | minify }}
     {{ printf `<link rel="stylesheet" href="%s">` $css.RelPermalink | safeHTML }}
 
+    {{ if (.Site.Config.Services.GoogleAnalytics.ID) }}
+        {{ if (eq (substr .Site.Config.Services.GoogleAnalytics.ID  0 1) "G") }}
+            {{ template "_internal/google_analytics.html" . }}
+        {{ end }}
+        {{ if (eq (substr .Site.Config.Services.GoogleAnalytics.ID  0 2) "UA") }}
+            {{ template "_internal/google_analytics_async.html" . }}
+        {{ end }}
+    {{ end }}
+
     <link rel="canonical" href="{{ .Permalink }}" />
     <title>{{ .Title }}</title>
 </head>
